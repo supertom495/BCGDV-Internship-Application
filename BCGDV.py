@@ -1,18 +1,30 @@
 import requests
 import json
 
-Url = "https://interns.bcgdvsydney.com/api/v1/key"
-# header = {}
-# data = {}
 
-response = requests.get(Url).json()
-# data = json.loads(s=response)
-apiKey = response["key"]
-print(apiKey)
+def getKey():
+    url = "https://interns.bcgdvsydney.com/api/v1/key"
 
-postUrl = "https://interns.bcgdvsydney.com/api/v1/submit?apiKey=" + apiKey
+    response = requests.get(url)
+    apiKey = response.json()["key"]
 
-print(postUrl)
+    print(response.status_code)
+    return apiKey
 
-# response = requests.post(Url, data=data, headers=header).text
-# print(response)
+
+def postKey(apiKey):
+    url = "https://interns.bcgdvsydney.com/api/v1/submit?apiKey={}".format(apiKey)
+
+    data = json.dumps({
+        "name": "Xiyan Tong",
+        "email": "xiyan.tong@outlook.com"	
+    })
+
+    response = requests.post(url, data=data)
+
+    print(response.status_code) 
+    print(response.text)    
+
+
+if __name__ == "__main__":
+    postKey(getKey())
